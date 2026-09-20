@@ -1,6 +1,6 @@
 # Car Price Prediction with Machine Learning
 
-   🔗 **Live Dashboard:** https://your-actual-url.streamlit.app
+   🔗 **Live Dashboard:** https://codealphacarpriceprediction-ngthegx2uykbgjbxn2jb5d.streamlit.app/
 
 ## Problem Statement
 Predict the fair selling price of a used car based on its specifications (original price, age, mileage, fuel type, transmission, and ownership history), using a supervised regression model trained on real used car listings.

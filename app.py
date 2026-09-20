@@ -7,6 +7,7 @@ st.set_page_config(page_title="Car Price Predictor", layout="wide")
 # Load model and feature list
 model = joblib.load("data/processed/car_price_model.pkl")
 feature_names = pd.read_csv("data/processed/model_features.csv")['0'].tolist()
+car_names_list = sorted(pd.read_csv("data/processed/car_data_cleaned.csv")['Car_Name'].unique().tolist())
 
 st.title("🚗 Car Price Prediction Dashboard")
 st.markdown("Predict a used car's fair selling price based on its specifications, using a Random Forest model trained on real used car listings.")
@@ -15,6 +16,7 @@ col1, col2 = st.columns([1, 1])
 
 with col1:
     st.subheader("Enter Car Details")
+    car_name = st.selectbox("Car Name (optional, for display only)", options=["(none)"] + car_names_list)
     present_price = st.number_input("Present Price (Lakhs ₹)", min_value=0.0, max_value=100.0, value=5.0, step=0.1)
     year = st.number_input("Manufacturing Year", min_value=2000, max_value=2020, value=2015)
     driven_kms = st.number_input("Kilometers Driven", min_value=0, max_value=500000, value=30000, step=1000)
@@ -50,8 +52,10 @@ with col2:
 
         input_df = pd.DataFrame([input_dict])[feature_names]
         prediction = model.predict(input_df)[0]
-
-        st.metric("Predicted Selling Price", f"₹ {prediction:.2f} Lakhs")
+        if car_name != "(none)":
+             st.metric(f"Predicted Price for {car_name}", f"₹ {prediction:.2f} Lakhs")
+        else:
+             st.metric("Predicted Selling Price", f"₹ {prediction:.2f} Lakhs")
         st.caption(f"Based on a car that is {car_age} years old with {driven_kms:,} km driven.")
     else:
         st.info("Fill in the car details and click 'Predict Price' to see the estimated selling price.")
